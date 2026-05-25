@@ -1,0 +1,12 @@
+====| CineReview |====
+1. Tambah Film
+2. Edit Film
+3. Hapus Film
+4. Cari Film
+    Genre / Judul
+5. Urutkan Film
+    Rating / Tahun
+6. Tampilkan Semua Film
+7. Statistik Film
+8. Keluar
+Pilih menu :
