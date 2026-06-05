@@ -24,8 +24,11 @@ func main() {
 
 	var pilihan int
 
-	for {
+	var start bool = true
 
+	for {
+		
+		if start {
 		fmt.Println("\n====| CineReview |====")
 		fmt.Println("1. Tambah Film")
 		fmt.Println("2. Edit Film")
@@ -37,10 +40,15 @@ func main() {
 		fmt.Println("8. Keluar")
 		fmt.Print("Pilih menu : ")
 		fmt.Scan(&pilihan)
+		start = false
+		} else {
+			fmt.Print("\nKetik 9 untuk kembali ke menu utama : ")
+			fmt.Scan(&pilihan)
+		}
 
 		if pilihan == 1 {
 
-			//tambahFilm
+			tambahFilm(&films)
 
 		} else if pilihan == 2 {
 
@@ -71,9 +79,13 @@ func main() {
 			fmt.Println("Program selesai")
 			break
 
+		} else if pilihan == 9 {
+			start = true
+
 		} else {
 
-			fmt.Println("Pilihan tidak tersedia")
+			fmt.Println("Pilihan", pilihan, "tidak tersedia")
+			// start = true
 		}
 	}
 }
@@ -92,4 +104,28 @@ func tampilFilm(films []Film) {
 		fmt.Println("Deskripsi :", films[i].Deskripsi)
 		fmt.Println("Rating  :", films[i].Rating)
 	}
+}
+
+func tambahFilm(films *[]Film) {
+
+	var filmBaru Film
+
+	fmt.Print("Masukkan Judul  : ")
+	fmt.Scan(&filmBaru.Judul)
+
+	fmt.Print("Masukkan Genre  : ")
+	fmt.Scan(&filmBaru.Genre)
+
+	fmt.Print("Masukkan Tahun  : ")
+	fmt.Scan(&filmBaru.Tahun)
+
+	fmt.Print("Masukkan Deskripsi : ")
+	fmt.Scan(&filmBaru.Deskripsi)
+
+	fmt.Print("Masukkan Rating : ")
+	fmt.Scan(&filmBaru.Rating)
+
+	*films = append(*films, filmBaru)
+
+	fmt.Println("Film berhasil ditambahkan")
 }
