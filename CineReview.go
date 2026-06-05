@@ -52,7 +52,7 @@ func main() {
 
 		} else if pilihan == 2 {
 
-			//editFilm
+			editFilm(&films)
 
 		} else if pilihan == 3 {
 
@@ -85,7 +85,6 @@ func main() {
 		} else {
 
 			fmt.Println("Pilihan", pilihan, "tidak tersedia")
-			// start = true
 		}
 	}
 }
@@ -128,4 +127,40 @@ func tambahFilm(films *[]Film) {
 	*films = append(*films, filmBaru)
 
 	fmt.Println("Film berhasil ditambahkan")
+}
+
+func editFilm(films *[]Film) {
+
+	var nomor int
+
+	tampilFilm(*films)
+
+	fmt.Print("Pilih nomor film yang ingin diedit : ")
+	fmt.Scan(&nomor)
+
+	nomor--
+
+	if nomor >= 0 && nomor < len(*films) {
+
+		fmt.Print("Judul Baru  : ")
+		fmt.Scan(&(*films)[nomor].Judul)
+
+		fmt.Print("Genre Baru  : ")
+		fmt.Scan(&(*films)[nomor].Genre)
+
+		fmt.Print("Tahun Baru  : ")
+		fmt.Scan(&(*films)[nomor].Tahun)
+
+		fmt.Print("Deskripsi Baru : ")
+		fmt.Scan(&(*films)[nomor].Deskripsi)
+
+		fmt.Print("Rating Baru : ")
+		fmt.Scan(&(*films)[nomor].Rating)
+
+		fmt.Println("Data film berhasil diubah")
+
+	} else {
+
+		fmt.Println("Nomor film tidak valid")
+	}
 }
