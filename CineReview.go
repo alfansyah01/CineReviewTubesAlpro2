@@ -27,6 +27,8 @@ func main() {
 
 	var pilihan int
 
+	
+
 	for {
 
 		if start {
@@ -58,15 +60,30 @@ func main() {
 
 		} else if pilihan == 3 {
 
-			//hapusFilm
+			hapusFilm(&films)
 
 		} else if pilihan == 4 {
 
-			//cariFilm
+			var keyword string
+
+			fmt.Print("Cari Berdasarkan judul/genre atau ketik '0' untuk kembali ke menu : ")
+			fmt.Scan(&keyword)
+
+			cariFilm(films, keyword)
 
 		} else if pilihan == 5 {
+			
 
-			//urutFilm
+		var keyword string
+
+	fmt.Print("\nUrutkan berdasarkan rating/tahun : ")
+	fmt.Scan(&keyword)
+
+	keyword = strings.ToLower(keyword)
+
+	urutFilm(&films, keyword)
+
+	tampilFilm(films)
 
 		} else if pilihan == 6 {
 
@@ -74,7 +91,7 @@ func main() {
 
 		} else if pilihan == 7 {
 
-			//statistikFilm
+			statistikFilm(films)
 
 		} else if pilihan == 8 {
 
@@ -220,4 +237,174 @@ func editFilm(films *[]Film) {
 			fmt.Println("Nomor film tidak valid")
 		}
 	}
+}
+
+func hapusFilm(films *[]Film) {
+
+	var nomor int
+
+	tampilFilm(*films)
+
+	fmt.Print("Pilih nomor film yang ingin dihapus : ")
+	fmt.Scan(&nomor)
+
+	nomor--
+
+	if nomor >= 0 && nomor < len(*films) {
+
+		*films = append((*films)[:nomor], (*films)[nomor+1:]...)
+
+		fmt.Println("Film berhasil dihapus")
+
+	} else {
+
+		fmt.Println("Nomor film tidak valid")
+	}
+}
+
+func cariFilm(films []Film, keyword string) {
+
+	var cari string
+	var i int
+	var found bool = false
+
+	if strings.EqualFold(keyword, "judul") {
+
+		fmt.Print("Masukkan judul film : ")
+		fmt.Scan(&cari)
+
+		for i = 0; i < len(films); i++ {
+
+			if strings.EqualFold(films[i].Judul, cari) {
+
+				fmt.Println("----------------------")
+				fmt.Println("Judul  :", films[i].Judul)
+				fmt.Println("Genre  :", films[i].Genre)
+				fmt.Println("Tahun  :", films[i].Tahun)
+				fmt.Println("Rating :", films[i].Rating)
+
+				found = true
+			}
+		}
+
+	} else if strings.EqualFold(keyword, "genre") {
+
+		fmt.Print("Masukkan genre film : ")
+		fmt.Scan(&cari)
+
+		for i = 0; i < len(films); i++ {
+
+			if strings.EqualFold(films[i].Genre, cari) {
+
+				fmt.Println("----------------------")
+				fmt.Println("Judul  :", films[i].Judul)
+				fmt.Println("Genre  :", films[i].Genre)
+				fmt.Println("Tahun  :", films[i].Tahun)
+				fmt.Println("Rating :", films[i].Rating)
+
+				found = true
+			}
+		}
+
+	} else if keyword == "0"{
+		start = true
+	}else{
+		fmt.Println("Pilihan tidak tersedia")
+		return
+	}
+
+	if found == false {
+		fmt.Println("Film tidak tersedia")
+	}
+}
+
+func urutFilm(films *[]Film, keyword string){
+	var i int
+	var j int
+	var max int
+	var temp Film
+	var key Film
+
+	if  keyword == "rating"{
+		for i = 0; i < len(*films)-1; i++ {
+
+		max = i
+
+		for j = i + 1; j < len(*films); j++ {
+
+			if (*films)[j].Rating > (*films)[max].Rating {
+				max = j
+			}
+		}
+
+		temp = (*films)[i]
+		(*films)[i] = (*films)[max]
+		(*films)[max] = temp
+		}
+	}else if keyword == "tahun"{
+		for i = 1; i < len(*films); i++ {
+
+		key = (*films)[i]
+		j = i - 1
+
+		for j >= 0 && (*films)[j].Tahun > key.Tahun {
+
+			(*films)[j+1] = (*films)[j]
+			j--
+		}
+
+		(*films)[j+1] = key
+		}
+	}else{
+		fmt.Print("Pilihan tidak tersedia")
+	}
+}
+
+func statistikFilm(films []Film) {
+
+	var i int
+	var action, thriller, drama, scifi, lainnya int
+	var totalRating float64
+
+	if len(films) == 0 {
+
+		fmt.Println("Belum ada data film")
+		return
+	}
+
+	for i = 0; i < len(films); i++ {
+
+		totalRating += films[i].Rating
+
+		if strings.EqualFold(films[i].Genre, "Action") {
+
+			action++
+
+		} else if strings.EqualFold(films[i].Genre, "Thriller") {
+
+			thriller++
+
+		} else if strings.EqualFold(films[i].Genre, "Drama") {
+
+			drama++
+
+		} else if strings.EqualFold(films[i].Genre, "Sci-Fi") {
+
+			scifi++
+
+		} else {
+
+			lainnya++
+		}
+	}
+
+	fmt.Println("\n===== STATISTIK FILM =====")
+	fmt.Println("Jumlah Film Action   :", action)
+	fmt.Println("Jumlah Film Thriller :", thriller)
+	fmt.Println("Jumlah Film Drama    :", drama)
+	fmt.Println("Jumlah Film Sci-Fi   :", scifi)
+	fmt.Println("Genre Lainnya        :", lainnya)
+
+	fmt.Printf("Rata-rata Rating : %.2f\n",
+		totalRating/float64(len(films)))
 }
