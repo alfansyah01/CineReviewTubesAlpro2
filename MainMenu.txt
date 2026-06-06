@@ -10,3 +10,7 @@
 7. Statistik Film
 8. Keluar
 Pilih menu :
+
+yang udah :
+1. tambah film
+2. tampilkan semua film
