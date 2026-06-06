@@ -27,8 +27,6 @@ func main() {
 
 	var pilihan int
 
-	
-
 	for {
 
 		if start {
@@ -72,18 +70,22 @@ func main() {
 			cariFilm(films, keyword)
 
 		} else if pilihan == 5 {
-			
 
-		var keyword string
+			var keyword string
 
-	fmt.Print("\nUrutkan berdasarkan rating/tahun : ")
-	fmt.Scan(&keyword)
+			fmt.Print("Urutkan berdasarkan rating/tahun atau ketik '0' untuk kembali ke menu : ")
+			fmt.Scan(&keyword)
 
-	keyword = strings.ToLower(keyword)
+			if keyword == "0" {
+				start = true
+				continue
+			}
 
-	urutFilm(&films, keyword)
+			keyword = strings.ToLower(keyword)
 
-	tampilFilm(films)
+			urutFilm(&films, keyword)
+
+			tampilFilm(films)
 
 		} else if pilihan == 6 {
 
@@ -119,7 +121,7 @@ func tampilFilm(films []Film) {
 		fmt.Println("Judul   	:", films[i].Judul)
 		fmt.Println("Genre   	:", films[i].Genre)
 		fmt.Println("Tahun   	:", films[i].Tahun)
-		fmt.Println("Deskripsi  :", films[i].Deskripsi)
+		fmt.Println("Deskripsi  	:", films[i].Deskripsi)
 		fmt.Println("Rating  	:", films[i].Rating)
 	}
 }
@@ -198,10 +200,10 @@ func editFilm(films *[]Film) {
 				fmt.Println("Data film berhasil diubah")
 				fmt.Print("Apakah anda ingin edit data film lagi? (y/n): ")
 				fmt.Scan(&pilihan)
-					if pilihan == "n" {
-						ulangi = false
-						start = true
-					}
+				if pilihan == "n" {
+					ulangi = false
+					start = true
+				}
 			} else {
 				switch strings.ToLower(pilihan) {
 				case "judul":
@@ -226,10 +228,10 @@ func editFilm(films *[]Film) {
 				fmt.Println("Data film berhasil diubah")
 				fmt.Print("Apakah anda ingin edit data film lagi? (y/n): ")
 				fmt.Scan(&pilihan)
-					if pilihan == "n" {
-						ulangi = false
-						start = true
-					}
+				if pilihan == "n" {
+					ulangi = false
+					start = true
+				}
 			}
 
 		} else {
@@ -245,8 +247,13 @@ func hapusFilm(films *[]Film) {
 
 	tampilFilm(*films)
 
-	fmt.Print("Pilih nomor film yang ingin dihapus : ")
+	fmt.Print("Pilih nomor film yang ingin dihapus atau ketik 0 untuk kembali : ")
 	fmt.Scan(&nomor)
+
+	if nomor == 0 {
+		start = true
+		return
+	}
 
 	nomor--
 
@@ -306,9 +313,9 @@ func cariFilm(films []Film, keyword string) {
 			}
 		}
 
-	} else if keyword == "0"{
+	} else if keyword == "0" {
 		start = true
-	}else{
+	} else {
 		fmt.Println("Pilihan tidak tersedia")
 		return
 	}
@@ -318,44 +325,44 @@ func cariFilm(films []Film, keyword string) {
 	}
 }
 
-func urutFilm(films *[]Film, keyword string){
+func urutFilm(films *[]Film, keyword string) {
 	var i int
 	var j int
 	var max int
 	var temp Film
 	var key Film
 
-	if  keyword == "rating"{
+	if keyword == "rating" {
 		for i = 0; i < len(*films)-1; i++ {
 
-		max = i
+			max = i
 
-		for j = i + 1; j < len(*films); j++ {
+			for j = i + 1; j < len(*films); j++ {
 
-			if (*films)[j].Rating > (*films)[max].Rating {
-				max = j
+				if (*films)[j].Rating > (*films)[max].Rating {
+					max = j
+				}
 			}
-		}
 
-		temp = (*films)[i]
-		(*films)[i] = (*films)[max]
-		(*films)[max] = temp
+			temp = (*films)[i]
+			(*films)[i] = (*films)[max]
+			(*films)[max] = temp
 		}
-	}else if keyword == "tahun"{
+	} else if keyword == "tahun" {
 		for i = 1; i < len(*films); i++ {
 
-		key = (*films)[i]
-		j = i - 1
+			key = (*films)[i]
+			j = i - 1
 
-		for j >= 0 && (*films)[j].Tahun > key.Tahun {
+			for j >= 0 && (*films)[j].Tahun > key.Tahun {
 
-			(*films)[j+1] = (*films)[j]
-			j--
+				(*films)[j+1] = (*films)[j]
+				j--
+			}
+
+			(*films)[j+1] = key
 		}
-
-		(*films)[j+1] = key
-		}
-	}else{
+	} else {
 		fmt.Print("Pilihan tidak tersedia")
 	}
 }
